@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+ss -tuln | grep LISTEN
+
