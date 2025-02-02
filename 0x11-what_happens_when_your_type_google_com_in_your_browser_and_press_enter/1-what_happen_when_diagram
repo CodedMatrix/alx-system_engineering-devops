@@ -1,0 +1,3 @@
+[Browser] → [DNS Resolver] → [Firewall] → [Load Balancer] → [Web Server] → [Application Server] → [Database]
+                  ↑                                      ↓
+             (SSL/TLS)                            (Processes data)
