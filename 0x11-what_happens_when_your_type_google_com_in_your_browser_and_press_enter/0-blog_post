@@ -1,0 +1,95 @@
+# What Happens When You Type `https://www.google.com` and Press Enter?
+
+The question of what happens when you type `https://www.google.com` in your browser and press Enter is a classic software engineering interview question. It covers various areas of computer networking, security, and web development. Let’s break down the process step by step:
+
+## 1. DNS Request
+
+When you type `https://www.google.com`, your browser first checks if it already has the corresponding IP address cached. If not, it initiates a Domain Name System (DNS) lookup to translate `www.google.com` into an IP address.
+
+### Steps of DNS Resolution:
+1. The browser checks its own cache.
+2. If not found, the request goes to the operating system’s cache.
+3. If still unresolved, the request is forwarded to the configured DNS resolver (often provided by your ISP or a service like Google DNS or Cloudflare DNS).
+4. The resolver queries a root DNS server, which directs it to the `.com` top-level domain (TLD) server.
+5. The TLD server directs the request to Google’s authoritative name servers.
+6. The authoritative name server returns the IP address associated with `www.google.com`.
+7. The resolver caches the response and sends it back to the browser.
+
+## 2. Establishing a TCP/IP Connection
+
+Once the IP address is resolved, the browser initiates a connection to the Google server using the Transmission Control Protocol (TCP) over the Internet Protocol (IP).
+
+### TCP/IP Steps:
+1. The browser sends a **SYN (synchronize)** packet to Google’s server.
+2. The server responds with a **SYN-ACK (synchronize-acknowledge)** packet.
+3. The browser sends an **ACK (acknowledge)** packet to establish the connection.
+
+This is known as the **three-way handshake** and ensures a reliable connection is established.
+
+## 3. Firewall Check
+
+As the request travels through the network, it may pass through multiple firewalls, such as those at your local network, your ISP, or Google’s data centers. Firewalls inspect and filter packets based on security rules to prevent malicious activity.
+
+## 4. HTTPS and SSL/TLS Handshake
+
+Since the request is over **HTTPS**, an **SSL/TLS handshake** occurs to establish a secure, encrypted connection between the browser and Google’s server.
+
+### SSL/TLS Steps:
+1. The browser sends a **ClientHello** message, including supported encryption algorithms.
+2. The server responds with a **ServerHello**, selecting an encryption method.
+3. The server sends its **SSL certificate**, which is verified by the browser.
+4. A **shared encryption key** is established using asymmetric cryptography.
+5. Both parties switch to using symmetric encryption for the session.
+
+This ensures data integrity, confidentiality, and authentication.
+
+## 5. Load Balancer
+
+Google employs **load balancers** to distribute traffic across multiple servers efficiently. The load balancer:
+- Routes the request to an available web server based on factors like server health, location, and load.
+- Ensures high availability and scalability.
+- Can terminate SSL to offload decryption from backend servers.
+
+## 6. Web Server Processing
+
+The request is forwarded to a **web server**, which handles HTTP(S) requests. Google likely uses Nginx or a custom web server optimized for performance.
+
+### The web server:
+- Interprets the request (GET, POST, etc.).
+- Determines which content to serve (static files, API calls, etc.).
+- Forwards dynamic requests to the **application server**.
+
+## 7. Application Server Processing
+
+If the request involves dynamic content (like a search query), the web server hands it over to an **application server**.
+
+- Google uses a highly optimized, distributed system to process search queries.
+- The application server executes business logic, processes user input, and may interact with databases.
+- Google’s architecture likely involves **microservices** and **containerized services** (e.g., Kubernetes, Borg).
+
+## 8. Database Query
+
+For data retrieval, the application server queries a **database**. Google’s infrastructure utilizes **Bigtable, Spanner, or custom NoSQL solutions** for:
+- Storing indexed web pages.
+- Caching frequently accessed data.
+- Handling real-time user queries efficiently.
+
+The query results are processed and returned to the application server.
+
+## 9. Response Back to the Browser
+
+After the database retrieves the necessary data:
+1. The application server processes it and formats the response (usually HTML, JSON, or XML).
+2. The web server sends the response back through the load balancer.
+3. The encrypted response travels back through the internet, passing through firewalls and routers.
+4. The browser receives the response and renders the webpage using:
+   - **HTML (structure)**
+   - **CSS (styling)**
+   - **JavaScript (interactivity)**
+5. The browser may make additional requests (e.g., images, scripts, stylesheets) to fully load the page.
+
+## Conclusion
+
+Typing `https://www.google.com` and pressing Enter triggers a complex sequence of events involving networking, security, load balancing, and data processing. Understanding this flow provides insights into how the web functions and is a valuable skill for software engineers.
+
+Would you like a deeper dive into any specific part of this workflow? Let me know in the comments!
